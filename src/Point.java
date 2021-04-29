@@ -1,27 +1,36 @@
+import java.nio.charset.StandardCharsets;
+
 public class Point {
 
-    private long id;
+    private String id, lat, lon, name="";
     private int size;
-    private double lat, lon;
-    private String name = "";
 
 
-    public Point(long id, double lat, double lon){
+    public Point(String id, String lat, String lon) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
-        this.size = 24;
+        this.size = this.id.length() + this.lat.length() + this.lon.length();
     }
 
-    public Point(long id, double lat, double lon, String name) {
+    public Point(String id, String lat, String lon, String name) {
         this(id, lat, lon);
         this.name = name;
-        this.size += name.getBytes().length;
+        this.size += this.name.length();
     }
 
-    public String toString() {
-        return this.id + " " + this.lat + " " + this.lon + " " + this.name + "THE SIZE IS " + this.size;
+    public byte[] writeToFile() {
+        String point = this.id + " " + this.lat + " " + this.lon;
+
+        if(!this.name.equals(""))
+        {
+            point += " " + this.name;
+        }
+        point += "\n";
+        return point.getBytes();
     }
 
-
+    public int get_size(){
+        return this.size;
     }
+}
