@@ -21,21 +21,56 @@ public class Main {
                 row = csvReader.nextLine();
                 data = row.split("\t");
                 try{
-                    new_point = new Point(Long.parseLong(data[0]), Double.parseDouble(data[1]), Double.parseDouble(data[2]), data[3]);
+                    new_point = new Point(data[0], data[1], data[2], data[3]);
                 }
                 catch (IndexOutOfBoundsException e){
-                    new_point = new Point(Long.parseLong(data[0]), Double.parseDouble(data[1]), Double.parseDouble(data[2]));
+                    new_point = new Point(data[0], data[1], data[2]);
                 }
                 points.add(new_point);
 
             }
         }
+
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println(points.get(11941));
+        int chunkSize = 0, counter = 0;
+        int blockId = 1;
+        try{
+            File datafile = new File("file/datafile.txt");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        String temp = "\n\n";
+//        Writing to datafile
+        try{
+            FileOutputStream writer = new FileOutputStream("file/datafile.txt");
+
+            for (int i = 0; i < points.size(); i++) {
+                if(chunkSize + points.get(i).get_size() <= 32768) {
+    //               Update chunksize
+                    chunkSize += points.get(i).get_size();
+    //                Write point i in the block
+                    writer.write(points.get(i).writeToFile());
+                }
+                else {
+                    writer.write(temp.getBytes());
+                    chunkSize = 0;
+                    blockId++;
+                    i--;
+                }
+                writer.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(blockId);
     }
 
 }
