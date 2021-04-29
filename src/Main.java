@@ -10,6 +10,7 @@ public class Main {
         String row;
         String[] data;
 
+        System.out.println();
         try {
             Scanner csvReader = new Scanner(new FileReader(file_path));
             while (csvReader.hasNextLine()) {
