@@ -6,11 +6,11 @@ public class Main {
 
     public static void main(String[] args){
 
+
         String file_path = "file/points.csv";
         String row;
         String[] data;
 
-        System.out.println();
         try {
             Scanner csvReader = new Scanner(new FileReader(file_path));
             while (csvReader.hasNextLine()) {
@@ -18,7 +18,7 @@ public class Main {
                 data = row.split("\t");
 //                System.out.print("ID: " + data[0] + " lat: " + data[1] + " lon: ");
                 try{
-                    System.out.println(data[3]);
+                    System.out.println(data[1]);
 
                 }
                 catch (ArrayIndexOutOfBoundsException ex){
