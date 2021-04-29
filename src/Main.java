@@ -1,23 +1,28 @@
 import java.io.*;
-import java.nio.Buffer;
-
+import java.util.Scanner;
 
 public class Main {
 
 
     public static void main(String[] args){
 
-        String file_path = "files/newmap.csv";
+        String file_path = "file/points.csv";
         String row;
+        String[] data;
 
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader(file_path));
-            while ((row = csvReader.readLine()) != null) {
-                String[] data = row.split("  ");
+            Scanner csvReader = new Scanner(new FileReader(file_path));
+            while (csvReader.hasNextLine()) {
+                row = csvReader.nextLine();
+                data = row.split("\t");
 //                System.out.print("ID: " + data[0] + " lat: " + data[1] + " lon: ");
-                System.out.println(data[1]);
+                try{
+                    System.out.println(data[3]);
 
-                System.out.println();
+                }
+                catch (ArrayIndexOutOfBoundsException ex){
+                    System.out.print("");
+                }
             }
         }
         catch (Exception e){
