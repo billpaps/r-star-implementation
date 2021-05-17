@@ -80,4 +80,7 @@ public class DataFile {
         System.out.println(blockId);
     }
 
+    public ArrayList<Point> getPoints() {
+        return points;
+    }
 }
