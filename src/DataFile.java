@@ -11,9 +11,10 @@ public class DataFile {
 
     public DataFile(){
         points = new ArrayList<>();
+        initialize();
     }
 
-    public void initialize(){
+    private void initialize(){
         String file_path = "file/points.csv";
         String row;
         String[] data;
