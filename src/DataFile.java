@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class DataFile {
 
     private ArrayList<Point> points;
+    private ArrayList<Point> blockIndex;
 
     public DataFile(){
         points = new ArrayList<>();
@@ -45,6 +46,7 @@ public class DataFile {
     private void write(){
         int chunkSize = 0, counter = 0;
         int blockId = 1;
+        blockIndex = new ArrayList<>();
         try{
             File datafile = new File("file/datafile.txt");
 
@@ -67,6 +69,8 @@ public class DataFile {
                 }
                 else {
                     writer.write(temp.getBytes());
+                    blockIndex.add(blockId - 1, points.get(counter));
+                    counter = i;
                     chunkSize = 0;
                     blockId++;
                     i--;
@@ -76,11 +80,47 @@ public class DataFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println(blockId);
     }
 
     public ArrayList<Point> getPoints() {
         return points;
+    }
+
+    public ArrayList<Point> getBlockIndex() {
+        return blockIndex;
+    }
+
+    // Returns arrayList of points in each block
+    public ArrayList<Point> getBlockPoints(int ind){
+        ArrayList<Point> blockPoints = new ArrayList<>();
+        try{
+            int counter = points.indexOf(blockIndex.get(ind - 1));
+            int sum = 0;
+            if (ind == blockIndex.size()){
+                while (counter < points.size()){
+                    blockPoints.add(points.get(counter));
+                    sum ++;
+                    counter ++;
+                }
+            }
+            else {
+                while ((points.get(counter) != points.get(points.indexOf(blockIndex.get(ind)))) && (counter < points.size())){
+                    blockPoints.add(points.get(counter));
+                    sum ++;
+                    counter ++;
+                }
+            }
+            System.out.println("Total number of points in block " + ind + ": " + sum);
+            return blockPoints;
+        }
+        catch (IndexOutOfBoundsException ind_ex){
+            System.out.println("Error! Index must be less or equal than " + blockIndex.size());
+            System.out.println("You entered: " + ind);
+            return null;
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
