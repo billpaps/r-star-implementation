@@ -1,5 +1,3 @@
-import java.nio.charset.StandardCharsets;
-
 public class Point {
 
     private String id, lat, lon, name="";
@@ -32,5 +30,21 @@ public class Point {
 
     public int get_size(){
         return this.size;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public String getName() {
+        return name;
     }
 }
