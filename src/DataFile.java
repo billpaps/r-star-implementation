@@ -3,15 +3,18 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.List;
+
 
 public class DataFile {
 
-    private ArrayList<Point> points;
-    private ArrayList<Point> blockIndex;
+    private ArrayList<Record> records;
+    private ArrayList<Record> blockIndex;
 
     public DataFile(){
-        points = new ArrayList<>();
+        records = new ArrayList<>();
         initialize();
     }
 
@@ -19,7 +22,7 @@ public class DataFile {
         String file_path = "file/points.csv";
         String row;
         String[] data;
-        Point new_point;
+        Record new_record;
 
 //      Storing Points in an ArrayList. Every element is the List is an Object.
         try {
@@ -27,13 +30,16 @@ public class DataFile {
             while (csvReader.hasNextLine()) {
                 row = csvReader.nextLine();
                 data = row.split("\t");
+
+                List<Double> coords = Arrays.asList(Double.parseDouble(data[0]),
+                                                    Double.parseDouble(data[1]));
                 try{
-                    new_point = new Point(data[0], data[1], data[2], data[3]);
+                    new_record = new Record(data[0], coords, data[3]);
                 }
                 catch (IndexOutOfBoundsException e){
-                    new_point = new Point(data[0], data[1], data[2]);
+                    new_record = new Record(data[0], coords, data[2]);
                 }
-                points.add(new_point);
+                records.add(new_record);
 
             }
         }
@@ -60,16 +66,16 @@ public class DataFile {
         try{
             FileOutputStream writer = new FileOutputStream("file/datafile.txt");
 
-            for (int i = 0; i < points.size(); i++) {
-                if(chunkSize + points.get(i).get_size() <= 32768) {
-                    //               Update chunksize
-                    chunkSize += points.get(i).get_size();
-                    //                Write point i in the block
-                    writer.write(points.get(i).writeToFile());
+            for (int i = 0; i < records.size(); i++) {
+                if(chunkSize + records.get(i).get_size() <= 32768) {
+                    // Update chunksize
+                    chunkSize += records.get(i).get_size();
+                    // Write point i in the block
+                    writer.write(records.get(i).writeToFile());
                 }
                 else {
                     writer.write(temp.getBytes());
-                    blockIndex.add(blockId - 1, points.get(counter));
+                    blockIndex.add(blockId - 1, records.get(counter));
                     counter = i;
                     chunkSize = 0;
                     blockId++;
@@ -80,38 +86,40 @@ public class DataFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(blockId);
     }
 
-    public ArrayList<Point> getPoints() {
-        return points;
+    public ArrayList<Record> getPoints() {
+        return records;
     }
 
-    public ArrayList<Point> getBlockIndex() {
+    public ArrayList<Record> getBlockIndex() {
         return blockIndex;
     }
 
-    // Returns arrayList of points in each block
-    public ArrayList<Point> getBlockPoints(int ind){
-        ArrayList<Point> blockPoints = new ArrayList<>();
+    // Returns arrayList of records in each block
+    public ArrayList<Record> getBlockRecords(int ind){
+        ArrayList<Record> blockRecords = new ArrayList<>();
         try{
-            int counter = points.indexOf(blockIndex.get(ind - 1));
+            int counter = records.indexOf(blockIndex.get(ind - 1));
             int sum = 0;
             if (ind == blockIndex.size()){
-                while (counter < points.size()){
-                    blockPoints.add(points.get(counter));
+                while (counter < records.size()){
+                    blockRecords.add(records.get(counter));
                     sum ++;
                     counter ++;
                 }
             }
+
             else {
-                while ((points.get(counter) != points.get(points.indexOf(blockIndex.get(ind)))) && (counter < points.size())){
-                    blockPoints.add(points.get(counter));
+                while ((records.get(counter) != records.get(records.indexOf(blockIndex.get(ind)))) && (counter < records.size())){
+                    blockRecords.add(records.get(counter));
                     sum ++;
                     counter ++;
                 }
             }
             System.out.println("Total number of points in block " + ind + ": " + sum);
-            return blockPoints;
+            return blockRecords;
         }
         catch (IndexOutOfBoundsException ind_ex){
             System.out.println("Error! Index must be less or equal than " + blockIndex.size());
