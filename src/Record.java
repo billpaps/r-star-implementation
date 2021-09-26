@@ -4,7 +4,7 @@ import java.util.List;
 public class Record {
 
     private final String id;
-    private String name;
+    private String name = "";
     private final List<Double> coords;
     private int size;
 

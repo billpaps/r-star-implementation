@@ -10,12 +10,14 @@ import java.util.List;
 
 public class DataFile {
 
-    private ArrayList<Record> records;
+    private final ArrayList<Record> records;
     private ArrayList<Record> blockIndex;
 
     public DataFile(){
         records = new ArrayList<>();
         initialize();
+        write();
+
     }
 
     private void initialize(){
@@ -31,13 +33,13 @@ public class DataFile {
                 row = csvReader.nextLine();
                 data = row.split("\t");
 
-                List<Double> coords = Arrays.asList(Double.parseDouble(data[0]),
-                                                    Double.parseDouble(data[1]));
+                List<Double> coords = Arrays.asList(Double.parseDouble(data[1]),
+                                                    Double.parseDouble(data[2]));
                 try{
                     new_record = new Record(data[0], coords, data[3]);
                 }
                 catch (IndexOutOfBoundsException e){
-                    new_record = new Record(data[0], coords, data[2]);
+                    new_record = new Record(data[0], coords);
                 }
                 records.add(new_record);
 
@@ -46,7 +48,6 @@ public class DataFile {
         catch (Exception e) {
             e.printStackTrace();
         }
-        write();
     }
 
     private void write(){
@@ -59,7 +60,6 @@ public class DataFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         String temp = "\n\n";
 //        Writing to datafile
