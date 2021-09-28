@@ -19,6 +19,10 @@ public class Node {
         children = new ArrayList<>();
     }
 
+    public void setMbr(Record rec){
+
+    }
+
     public Node getParent() {
         return parent;
     }
@@ -41,6 +45,14 @@ public class Node {
 
     public double[][] getMbr() {
         return mbr;
+    }
+
+    public boolean getLeaf(){
+        return leaf;
+    }
+
+    public void setLeaf(boolean leaf){
+        this.leaf = leaf;
     }
 
 }
