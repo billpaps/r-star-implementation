@@ -89,7 +89,7 @@ public class DataFile {
         System.out.println(blockId);
     }
 
-    public ArrayList<Record> getPoints() {
+    public ArrayList<Record> getRecords() {
         return records;
     }
 
