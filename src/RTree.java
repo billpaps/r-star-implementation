@@ -11,7 +11,7 @@ public class RTree {
     public RTree(int dim, DataFile data) {
         this.dim = dim;
         records = data.getRecords();
-        root = new Node(2, null);
+        root = new Node(dim, null);
         BuildRTree();
     }
 
@@ -36,9 +36,36 @@ public class RTree {
 
     private void SplitNode(Node currnode, Record NewRec){
         int axis = ChooseSplitAxis(currnode, NewRec);
-        ArrayList<ArrayList<Record>> min_distribution = new ArrayList<>();
+        ArrayList<ArrayList<Record>> min_distribution = Calculate_Minimum_Distribution(currnode,NewRec, axis);
 
-        min_distribution = Calculate_Minimum_Distr(currnode,NewRec, axis);
+        // Root
+        if (currnode == root){
+            Node child_node1 = new Node(dim,currnode);
+            Node child_node2 = new Node(dim,currnode);
+
+            currnode.getChildren().add(child_node1);
+            currnode.getChildren().add(child_node2);
+            currnode.setLeaf(false);
+
+            for (int i = 0;i<min_distribution.get(0).size();i++){
+                Record rec = min_distribution.get(0).get(i);
+                child_node1.getRecords().add(rec);
+            }
+            for (int i = 0;i<min_distribution.get(1).size();i++){
+                Record rec = min_distribution.get(1).get(i);
+                child_node2.getRecords().add(rec);
+            }
+
+        }
+
+        // Normal Node
+        else if(currnode.getChildren().size() == M){
+
+        }
+        // Node with M children
+        else if(currnode.isLeaf()){
+
+        }
 
     }
 
@@ -60,7 +87,11 @@ public class RTree {
         return min_axis;
     }
 
-    private ArrayList<ArrayList<Record>> Calculate_Minimum_Distr(Node currnode, Record NewRec, int axis){
+    private ArrayList<ArrayList<Record>> Calculate_Minimum_Distribution(Node currnode, Record NewRec, int axis){
+        double area;
+        double overlap;
+        double minOverlap = Double.MAX_VALUE;
+        double minArea = Double.MAX_VALUE;
         ArrayList<ArrayList<Record>> minDistr_Overlap = new ArrayList<>();
         ArrayList<ArrayList<Record>> minDistr_Area = new ArrayList<>();
         ArrayList<Record> sortedRecords = sortRecords(currnode,NewRec,axis);
@@ -80,9 +111,36 @@ public class RTree {
                 i++;
             }
 
+            overlap = calcRectangleOverlap(MBR_Calculate(group_a), MBR_Calculate(group_b));
+            area = calcArea();
+
+            if (overlap < minOverlap){
+                minOverlap = overlap;
+                minDistr_Overlap = new ArrayList<>();
+                minDistr_Overlap.add(group_a);
+                minDistr_Overlap.add(group_b);
+            }
+
+            if(area < minArea){
+                minArea = area;
+                minDistr_Area = new ArrayList<>();
+                minDistr_Area.add(group_a);
+                minDistr_Area.add(group_b);
+            }
+
+            group_a = new ArrayList<>();
+            group_b = new ArrayList<>();
+
         }
-        // ------------------------------------------
-        return minDistr_Overlap;
+        // Resovle with ties:
+        // if there is no minimum overlap, choose
+        // distribution with minimum area.
+        if(minOverlap == 0){
+            return minDistr_Area;
+        }
+        else {
+            return minDistr_Overlap;
+        }
     }
 
     private Node ChooseLeaf(Record record, Node currnode){
