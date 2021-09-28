@@ -16,19 +16,43 @@ public class Node {
         this.dim = dim;
         this.leaf = true;
         this.size = 0;
-        mbr = new double[dim][dim];
+        mbr = new double[dim][2];
         records = new ArrayList<>();
         children = new ArrayList<>();
     }
 
 
-    public void setMbr(double[][] mbr) {
-        this.mbr = mbr;
+    public void setMbr(Record newRec) {
+
+        for (int axis = 0; axis < dim; axis++) {
+
+            // Check min and max for each axis
+            if (newRec.getCords().get(axis) < mbr[axis][0]) {
+                mbr[axis][0] = newRec.getCords().get(axis);
+            } else if (newRec.getCords().get(axis) > mbr[axis][1]) {
+                mbr[axis][1] = newRec.getCords().get(axis);
+            }
+        }
     }
 
-    public void addChildSize(){
+    public void setMbr(Node newRec) {
+
+        for (int axis = 0; axis < dim; axis++) {
+            // Check min and max for each axis
+            if (newRec.getMbr()[axis][0] < mbr[axis][0] || mbr[axis][0]==0) {
+                mbr[axis][0] = newRec.getMbr()[axis][0];
+            } else if (newRec.getMbr()[axis][1] > mbr[axis][1] || mbr[axis][1] == 0) {
+                mbr[axis][1] = newRec.getMbr()[axis][1];
+            }
+        }
+    }
+
+
+    public void addChildSize() {
+
         this.size++;
     }
+
 
     public Node getParent() {
         return parent;
@@ -55,15 +79,15 @@ public class Node {
         return records;
     }
 
-    public ArrayList<Node> getChildren() {
-        return children;
+    public Node getChildren(int i) {
+        return children.get(i);
     }
 
     public double[][] getMbr() {
         return mbr;
     }
 
-//    public double getArea() {
+    //    public double getArea() {
 //        double area = 1;
 //        for (int axis = 0; axis < dim; axis++) {
 //            double min, max;
@@ -80,4 +104,13 @@ public class Node {
 //        }
 //        return area;
 //    }
+    public boolean getLeaf() {
+        return leaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        this.leaf = leaf;
+    }
+
 }
+

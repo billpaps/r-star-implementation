@@ -8,7 +8,6 @@ public class Record {
     private final List<Double> coords;
     private int size;
 
-
     public Record(String id, List<Double> coords) {
         this.id = id;
         this.coords = coords;
