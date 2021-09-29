@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Node {
@@ -20,7 +21,6 @@ public class Node {
         records = new ArrayList<>();
         children = new ArrayList<>();
     }
-
 
     public void setMbr(Record newRec) {
 
@@ -47,9 +47,7 @@ public class Node {
         }
     }
 
-
     public void addChildSize() {
-
         this.size++;
     }
 
@@ -81,6 +79,10 @@ public class Node {
 
     public Node getChildren(int i) {
         return children.get(i);
+    }
+
+    public ArrayList<Node> getChildren() {
+        return children;
     }
 
     public double[][] getMbr() {

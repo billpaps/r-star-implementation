@@ -19,42 +19,41 @@ public class RTree {
     }
 
     public void BuildRTree() {
-        for(Record rec : records){
+        for (Record rec : records) {
             Insert(root, rec);
         }
 
 
     }
 
-    private void Insert(Node currNode, Record newRec){
+    private void Insert(Node currNode, Record newRec) {
         Node selected_node = chooseLeaf(currNode, newRec);
-        if (selected_node.getRecords().size() <= M){
+        if (selected_node.getRecords().size() <= M) {
             selected_node.getRecords().add(newRec);
             selected_node.setMbr(newRec);
-        }
-        else{
+        } else {
             SplitNode(currNode, newRec);
         }
     }
 
-    private void SplitNode(Node currNode, Record newRec){
+    private void SplitNode(Node currNode, Record newRec) {
         int axis = ChooseSplitAxis(currNode, newRec);
-        ArrayList<ArrayList<Record>> min_distribution = Calculate_Minimum_Distribution(currNode,newRec, axis);
+        ArrayList<ArrayList<Record>> min_distribution = Calculate_Minimum_Distribution(currNode, newRec, axis);
 
         // Root
-        if (currNode == root){
-            Node child_node1 = new Node(dim,currNode);
-            Node child_node2 = new Node(dim,currNode);
+        if (currNode == root) {
+            Node child_node1 = new Node(dim, currNode);
+            Node child_node2 = new Node(dim, currNode);
 
             currNode.getChildren().add(child_node1);
             currNode.getChildren().add(child_node2);
             currNode.setLeaf(false);
 
-            for (int i = 0;i<min_distribution.get(0).size();i++){
+            for (int i = 0; i < min_distribution.get(0).size(); i++) {
                 Record rec = min_distribution.get(0).get(i);
                 child_node1.getRecords().add(rec);
             }
-            for (int i = 0;i<min_distribution.get(1).size();i++){
+            for (int i = 0; i < min_distribution.get(1).size(); i++) {
                 Record rec = min_distribution.get(1).get(i);
                 child_node2.getRecords().add(rec);
             }
@@ -62,11 +61,11 @@ public class RTree {
         }
 
         // Normal Node
-        else if(currNode.getChildren().size() == M){
+        else if (currNode.getChildren().size() == M) {
             assert true;
         }
         // Node with M children
-        else if(currNode.getIsLeaf()){
+        else if (currNode.getIsLeaf()) {
             assert true;
         }
     }
@@ -74,7 +73,6 @@ public class RTree {
     public Node chooseLeaf(Node currNode, Record newRec) {
 
         currNode.setMbr(newRec);
-        double[] overlapChildren = new double[currNode.getSize()];
         // Node is a children
         if (currNode.getIsLeaf()) {
             return currNode;
@@ -82,6 +80,7 @@ public class RTree {
         // Node has leaf children. Select the one with the
         // least overlap
         else if (currNode.getHasLeaf()) {
+            double[] overlapChildren = new double[currNode.getSize()];
             // For each leaf_Children calculate overlap. We need to find the minimum
 
             for (int i = 0; i < currNode.getSize(); i++) {
@@ -101,12 +100,16 @@ public class RTree {
         }
         // Node has nodes as children. Select the one with the
         // lest overlap
-        else
-        {
+        else {
+            double[] areaOverlapChildren = new double[currNode.getSize()];
             for (int i = 0; i < currNode.getSize(); i++) {
-                overlapChildren[i] = calcRectangleOverlap(i);
+                areaOverlapChildren[i] = 1.0;
+                Node temp = new Node(dim, null);
+                temp.setMbr(currNode.getChildren(i));
+                temp.setMbr(newRec);
+                areaOverlapChildren[i] = getArea(temp.getMbr()) - getArea(currNode.getMbr());
             }
-            int minIndex = findMinIndex(overlapChildren);
+            int minIndex = findMinIndex(areaOverlapChildren);
             return chooseLeaf(currNode.getChildren(minIndex), newRec);
         }
     }
