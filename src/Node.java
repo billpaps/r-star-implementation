@@ -47,26 +47,26 @@ public class Node {
         }
     }
 
-    public void addChildSize() {
-        this.size++;
-    }
-
+    public void zeroMbr(){mbr = new double[dim][2];}
+    public void zeroRecords(){records = new ArrayList<>();}
 
     public Node getParent() {
         return parent;
+    }
+    public void setParent(Node parent){
+        this.parent = parent;
     }
 
     public int getSize() {
         return size;
     }
 
-
     public boolean getIsLeaf() {
         return leaf;
     }
 
     public boolean getHasLeaf() {
-        return leaf;
+        return hasleaf;
     }
 
     public int getDim() {
@@ -89,23 +89,6 @@ public class Node {
         return mbr;
     }
 
-    //    public double getArea() {
-//        double area = 1;
-//        for (int axis = 0; axis < dim; axis++) {
-//            double min, max;
-//            min = max = mbr[0][axis];
-//            for (int i = 0; i < dim; i++) {
-//                if (mbr[i][axis] < min) {
-//                    min = mbr[i][axis];
-//                }
-//                else if (mbr[i][axis] > max) {
-//                    max = mbr[i][axis];
-//                }
-//            }
-//            area *= min;
-//        }
-//        return area;
-//    }
     public boolean getLeaf() {
         return leaf;
     }
