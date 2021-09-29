@@ -77,39 +77,42 @@ public class RTree {
         if (currNode.getIsLeaf()) {
             return currNode;
         }
-        // Node has leaf children. Select the one with the
-        // least overlap
-        else if (currNode.getHasLeaf()) {
-            double[] overlapChildren = new double[currNode.getSize()];
-            // For each leaf_Children calculate overlap. We need to find the minimum
+        else {
+            int minIndex;
+            // Node has leaf children. Select the one with the
+            // least overlap
+            if (currNode.getHasLeaf()) {
+                double[] overlapChildren = new double[currNode.getSize()];
+                // For each leaf_Children calculate overlap. We need to find the minimum
 
-            for (int i = 0; i < currNode.getSize(); i++) {
-                Node temp = new Node(dim, null);
-                temp.setMbr(currNode.getChildren(i));
-                temp.setMbr(newRec);
-                for (int j = 0; j < currNode.getSize(); j++) {
-                    if (i != j) {
-                        overlapChildren[i] += calcRectangleOverlap(temp.getMbr(), currNode.getChildren(i).getMbr());
+                for (int i = 0; i < currNode.getSize(); i++) {
+                    Node temp = new Node(dim, null);
+                    temp.setMbr(currNode.getChildren(i));
+                    temp.setMbr(newRec);
+                    for (int j = 0; j < currNode.getSize(); j++) {
+                        if (i != j) {
+                            overlapChildren[i] += calcRectangleOverlap(temp.getMbr(), currNode.getChildren(i).getMbr());
+                        }
                     }
                 }
+
+                // Find the minimum index(Child) of the list with the lowest overlap
+                minIndex = findMinIndex(overlapChildren);
             }
 
-            // Find the minimum index(Child) of the list with the lowest overlap
-            int minIndex = findMinIndex(overlapChildren);
-            return chooseLeaf(currNode.getChildren(minIndex), newRec);
-        }
-        // Node has nodes as children. Select the one with the
-        // lest overlap
-        else {
-            double[] areaOverlapChildren = new double[currNode.getSize()];
-            for (int i = 0; i < currNode.getSize(); i++) {
-                areaOverlapChildren[i] = 1.0;
-                Node temp = new Node(dim, null);
-                temp.setMbr(currNode.getChildren(i));
-                temp.setMbr(newRec);
-                areaOverlapChildren[i] = getArea(temp.getMbr()) - getArea(currNode.getMbr());
+            // Node has nodes as children. Select the one with the
+            // lest overlap
+            else {
+                double[] areaOverlapChildren = new double[currNode.getSize()];
+                for (int i = 0; i < currNode.getSize(); i++) {
+                    areaOverlapChildren[i] = 1.0;
+                    Node temp = new Node(dim, null);
+                    temp.setMbr(currNode.getChildren(i));
+                    temp.setMbr(newRec);
+                    areaOverlapChildren[i] = getArea(temp.getMbr()) - getArea(currNode.getMbr());
+                }
+                minIndex = findMinIndex(areaOverlapChildren);
             }
-            int minIndex = findMinIndex(areaOverlapChildren);
             return chooseLeaf(currNode.getChildren(minIndex), newRec);
         }
     }
