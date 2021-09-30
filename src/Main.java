@@ -4,9 +4,11 @@ import java.util.List;
 
 public class Main {
 
-
     public static void main(String[] args){
         DataFile data = new DataFile();
-//        IndexFile index = new IndexFile(data);
+
+        RTree originalRTree = new RTree(2, data);
+        
+
     }
 }

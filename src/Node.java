@@ -48,11 +48,17 @@ public class Node {
     }
 
     public void zeroMbr(){mbr = new double[dim][2];}
+
     public void zeroRecords(){records = new ArrayList<>();}
+
+    public void zeroChildren(){
+        children = new ArrayList<>();
+    }
 
     public Node getParent() {
         return parent;
     }
+
     public void setParent(Node parent){
         this.parent = parent;
     }
