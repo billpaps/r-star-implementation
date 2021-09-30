@@ -11,9 +11,10 @@ public class RTree {
     private ArrayList<Record> records;
     private final ArrayList<Record> block_Index;
     private final DataFile data;
-    private final int M = 4;
-    private final int m = 2;
+    private int M = 4;
+    private int m = 2;
 
+    // Constructor
     public RTree(int dim) {
         this.dim = dim;
         records = new ArrayList<>();
@@ -21,32 +22,44 @@ public class RTree {
         block_Index = data.getBlockIndex();
         root = new Node(dim, null);
     }
+    public RTree(int dim, int M, int m) {
+        this.dim = dim;
+        this.M = M;
+        this.m = m;
+        records = new ArrayList<>();
+        data = new DataFile();
+        block_Index = data.getBlockIndex();
+        root = new Node(dim, null);
+    }
 
+    // Method to begin the rtree build
     public void buildTree() {
         int block_ind;
         for (block_ind = 1; block_ind < block_Index.size(); block_ind ++){
             records = data.getBlockRecords(block_ind);
             for (Record rec : records) {
-                Insert(root, rec);
+                insert(root, rec);
             }
             records = new ArrayList<>();
         }
     }
 
-    private void Insert(Node currNode, Record newRec) {
+    // Instert of newRec method
+    private void insert(Node currNode, Record newRec) {
         Node selected_node = chooseLeaf(currNode, newRec);
         if (selected_node.getRecords().size() < M) {
             selected_node.getRecords().add(newRec);
             selected_node.setMbr(newRec);
         } else {
             // OverFlow treatment is called
-            SplitNode(selected_node, newRec);
+            splitNode(selected_node, newRec);
         }
     }
+
     // SplitNode method for Leaf nodes
-    private void SplitNode(Node currNode, Record newRec) {
-        int axis = ChooseSplitAxis(currNode, newRec);
-        ArrayList<ArrayList<Record>> min_distribution = Calculate_Minimum_Distribution(currNode, newRec, axis);
+    private void splitNode(Node currNode, Record newRec)    {
+        int axis = chooseSplitAxis(currNode, newRec);
+        ArrayList<ArrayList<Record>> min_distribution = calculateMinimumDistribution(currNode, newRec, axis);
 
         // Root
         if (currNode.getParent() == null) {
@@ -66,13 +79,11 @@ public class RTree {
             currNode.getChildren().add(child_node2);
             currNode.zeroRecords();
             currNode.setLeaf(false);
-            System.out.println("root split: and we have: " + currNode.getChildren().size());
 
         }
         // Not root node
         else {
             if (currNode.getParent().getChildren().size() == M){
-                System.out.println("1: parent filled with M entries");
                 Node child = new Node(dim, null);
 
                 currNode.zeroMbr();
@@ -86,10 +97,9 @@ public class RTree {
                     child.setMbr(recB);
                 }
                 child.setLeaf(false);
-                SplitNode(currNode, child);
+                splitNode(currNode, child);
             }
             else{
-                System.out.println("2: parent has space for more entries");
                 currNode.getParent().setMbr(newRec);
                 Node child = new Node(dim, currNode.getParent());
 
@@ -106,15 +116,13 @@ public class RTree {
                 child.getParent().getChildren().add(child);
             }
         }
-//        System.out.println("==============================================================");
     }
 
     // SplitNode method for non-Leaf nodes
-    private void SplitNode(Node currNode, Node newNode) {
-        int axis = ChooseSplitAxis(currNode, newNode);
-        ArrayList<ArrayList<Node>> min_distribution = Calculate_Minimum_Distribution(currNode, newNode, axis);
+    private void splitNode(Node currNode, Node newNode) {
+        int axis = chooseSplitAxis(currNode, newNode);
+        ArrayList<ArrayList<Node>> min_distribution = calculateMinimumDistribution(currNode, newNode, axis);
 
-        System.out.println("=======NODE======");
         // Root
         if (currNode.getParent() == null) {
             Node child_node1 = new Node(dim, currNode);
@@ -135,13 +143,11 @@ public class RTree {
             currNode.setLeaf(false);
             currNode.getChildren().add(child_node1);
             currNode.getChildren().add(child_node2);
-            System.out.println("0: and we have: " + currNode.getChildren().size());
         }
 
         // Not root node
         else {
             if (currNode.getParent().getChildren().size() == M){
-                System.out.println("1: parent filled with M entries");
                 Node child = new Node(dim, null);
 
                 currNode.zeroMbr();
@@ -155,10 +161,9 @@ public class RTree {
                     child.setMbr(nodeB);
                 }
                 child.setLeaf(false);
-                SplitNode(currNode.getParent(), child);
+                splitNode(currNode.getParent(), child);
             }
             else{
-                System.out.println("Case 2: parent has space for more entries");
                 currNode.getParent().setMbr(newNode);
                 Node child = new Node(dim, currNode.getParent());
 
@@ -176,6 +181,7 @@ public class RTree {
         }
     }
 
+    // Method that chooses the leaf to insert newRec
     private Node chooseLeaf(Node currNode, Record newRec) {
 
         currNode.setMbr(newRec);
@@ -228,7 +234,7 @@ public class RTree {
 
     // Method to choose the axis with the minimum sum
     // of margin values to split in leaf nodes
-    private int ChooseSplitAxis(Node currNode, Record newRec){
+    private int chooseSplitAxis(Node currNode, Record newRec){
         double [][] SMV = new double[dim][2];
         int min_axis;
         for (int i = 0; i < dim; i++){
@@ -246,7 +252,7 @@ public class RTree {
 
     // Method to choose the axis with the minimum sum
     // of margin values to split in non - leaf nodes
-    private int ChooseSplitAxis(Node currNode, Node newNode){
+    private int chooseSplitAxis(Node currNode, Node newNode){
         double [][] SMV = new double[dim][2];
         int min_axis;
         for (int i = 0; i < dim; i++){
@@ -263,7 +269,8 @@ public class RTree {
         return min_axis;
     }
 
-    private ArrayList<ArrayList<Record>> Calculate_Minimum_Distribution(Node currNode, Record NewRec, int axis){
+    // Method to calculate the record Min Distribution based on the sum of margin values
+    private ArrayList<ArrayList<Record>> calculateMinimumDistribution(Node currNode, Record NewRec, int axis){
         double area;
         double overlap;
         double minOverlap = Double.MAX_VALUE;
@@ -319,7 +326,8 @@ public class RTree {
         }
     }
 
-    private ArrayList<ArrayList<Node>> Calculate_Minimum_Distribution(Node currNode, Node newNode, int axis){
+    // Method to calculate the node Min Distribution based on the sum of margin values
+    private ArrayList<ArrayList<Node>> calculateMinimumDistribution(Node currNode, Node newNode, int axis){
         double[] area = new double[2];
         double[] overlap = new double[2];
         double minOverlap = Double.MAX_VALUE;
@@ -402,6 +410,8 @@ public class RTree {
         return sum_margin;
     }
 
+    // Method to calculate the sum of all Margin Values of
+    // the 2 node groups.
     private double sCalculate(ArrayList<Node> sortedNodes){
         double sum_margin = 0;
         ArrayList<Node> group_a = new ArrayList<>();
@@ -487,6 +497,8 @@ public class RTree {
         return sortedRecords;
     }
 
+    // Method to sort the nodes accordingly depending on
+    // the axis / dimension
     private ArrayList<Node> sortNodes(Node node, Node newNode, int axis, int mode) {
 
         ArrayList<Node> sortedNodes = new ArrayList<>(node.getChildren());
@@ -511,12 +523,12 @@ public class RTree {
             }
             return minIndex;
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("EXCEPTION");
             return 0;
         }
 
     }
 
+    // Method calculating overlap between 2 mbrs
     private double calcOverlap(double[][] mbr1, double[][] mbr2) {
         double overlap = 1;
         for (int axis = 0; axis < dim; axis++) {
@@ -533,11 +545,6 @@ public class RTree {
         }
         return area;
     }
-
-    public Node getRoot() {
-        return this.root;
-    }
-
 }
 
 

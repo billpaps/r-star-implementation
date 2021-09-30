@@ -24,7 +24,7 @@ public class Node {
 
     public void setMbr(Record newRec) {
 
-        for (int axis = 0; axis < dim; axis++) {
+        for (int axis = 0; axis < this.dim; axis++) {
             // Check min and max for each axis
             if (newRec.getCords().get(axis) < mbr[axis][0] || mbr[axis][0] == 0) {
                 mbr[axis][0] = newRec.getCords().get(axis);
@@ -57,7 +57,7 @@ public class Node {
     }
 
     public Node getParent() {
-        return parent;
+        return this.parent;
     }
 
     public void setParent(Node parent){
@@ -65,7 +65,7 @@ public class Node {
     }
 
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     public boolean getIsLeaf() {
@@ -88,9 +88,7 @@ public class Node {
         return children.get(i);
     }
 
-    public ArrayList<Node> getChildren() {
-        return children;
-    }
+    public ArrayList<Node> getChildren(){return  children;}
 
     public double[][] getMbr() {
         return mbr;

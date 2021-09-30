@@ -4,8 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f2330fd3-82a7-481f-ba6f-daa01b7ffd34" name="Changes" comment="">
+    <list default="true" id="f2330fd3-82a7-481f-ba6f-daa01b7ffd34" name="Changes" comment="Added setter-getter for &quot;leaf&quot; method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/file/datafile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/file/datafile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/DataFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/DataFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/RTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/RTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Record.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/Record.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/papadopoulos_r_star/file/datafile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/papadopoulos_r_star/file/datafile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RTree.java" afterDir="false" />
     </list>
@@ -42,6 +52,9 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -58,6 +71,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -69,15 +83,32 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1632131051290</updated>
+      <workItem from="1632927813385" duration="6064000" />
+      <workItem from="1633008755254" duration="9147000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -86,21 +117,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RTree.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RTree.java</url>
-          <line>68</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

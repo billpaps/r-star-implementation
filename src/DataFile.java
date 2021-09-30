@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-
 public class DataFile {
 
     private final ArrayList<Record> records;
@@ -83,32 +82,31 @@ public class DataFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(blockId);
     }
 
     public ArrayList<Record> getBlockIndex() {
         return blockIndex;
     }
 
-    public void findDuplicates(){
-        ArrayList<Long> id = new ArrayList<>();
-        String prob_str;
-        int count = 0;
-            for (Record rec : records){
-                prob_str = rec.getId();
-                try {
-                    id.add(Long.parseLong(rec.getId()));
-                }
-                catch (NumberFormatException n){
-                    count++;
-                    System.out.println("Problematic String: " + prob_str);
-                }
-            }
-        Set<Long> set = new HashSet<>(id);
-        System.out.println("Problematic count = " + count);
-        System.out.println("Set size is " + set.size());
-        System.out.println("Id size is " + id.size());
-    }
+//    public void findDuplicates(){
+//        ArrayList<Long> id = new ArrayList<>();
+//        String prob_str;
+//        int count = 0;
+//            for (Record rec : records){
+//                prob_str = rec.getId();
+//                try {
+//                    id.add(Long.parseLong(rec.getId()));
+//                }
+//                catch (NumberFormatException n){
+//                    count++;
+//                    System.out.println("Problematic String: " + prob_str);
+//                }
+//            }
+//        Set<Long> set = new HashSet<>(id);
+//        System.out.println("Problematic count = " + count);
+//        System.out.println("Set size is " + set.size());
+//        System.out.println("Id size is " + id.size());
+//    }
 
     // Returns arrayList of records in each block
     public ArrayList<Record> getBlockRecords(int ind){
