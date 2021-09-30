@@ -2,10 +2,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.List;
+import java.util.*;
 
 
 public class DataFile {
@@ -89,12 +86,28 @@ public class DataFile {
         System.out.println(blockId);
     }
 
-    public ArrayList<Record> getRecords() {
-        return records;
-    }
-
     public ArrayList<Record> getBlockIndex() {
         return blockIndex;
+    }
+
+    public void findDuplicates(){
+        ArrayList<Long> id = new ArrayList<>();
+        String prob_str;
+        int count = 0;
+            for (Record rec : records){
+                prob_str = rec.getId();
+                try {
+                    id.add(Long.parseLong(rec.getId()));
+                }
+                catch (NumberFormatException n){
+                    count++;
+                    System.out.println("Problematic String: " + prob_str);
+                }
+            }
+        Set<Long> set = new HashSet<>(id);
+        System.out.println("Problematic count = " + count);
+        System.out.println("Set size is " + set.size());
+        System.out.println("Id size is " + id.size());
     }
 
     // Returns arrayList of records in each block
@@ -118,7 +131,6 @@ public class DataFile {
                     counter ++;
                 }
             }
-            System.out.println("Total number of points in block " + ind + ": " + sum);
             return blockRecords;
         }
         catch (IndexOutOfBoundsException ind_ex){

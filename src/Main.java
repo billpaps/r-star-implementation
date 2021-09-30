@@ -1,14 +1,18 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args){
-        DataFile data = new DataFile();
-
-        RTree originalRTree = new RTree(2, data);
-        
-
+        RTree rtree = new RTree(2);
+        rtree.buildTree();
+        Node root = rtree.getRoot().getChildren(0);
+//        while (true){
+//            System.out.println(root.getChildren().size());
+//            try {
+//                root = root.getChildren(0);
+//            } catch (IndexOutOfBoundsException e) {
+//                System.out.println(root.getIsLeaf());
+//                System.out.println("enddddd");
+//                break;
+//            }
+//        }
     }
 }

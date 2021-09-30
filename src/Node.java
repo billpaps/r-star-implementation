@@ -25,13 +25,14 @@ public class Node {
     public void setMbr(Record newRec) {
 
         for (int axis = 0; axis < dim; axis++) {
-
             // Check min and max for each axis
-            if (newRec.getCords().get(axis) < mbr[axis][0]) {
+            if (newRec.getCords().get(axis) < mbr[axis][0] || mbr[axis][0] == 0) {
                 mbr[axis][0] = newRec.getCords().get(axis);
-            } else if (newRec.getCords().get(axis) > mbr[axis][1]) {
+            } else if (newRec.getCords().get(axis) > mbr[axis][1] || mbr[axis][1] == 0) {
                 mbr[axis][1] = newRec.getCords().get(axis);
             }
+//            System.out.println(newRec.getCords().get(axis));
+
         }
     }
 
